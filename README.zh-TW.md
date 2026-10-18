@@ -16,7 +16,6 @@
 - [需求](#需求)
 - [安裝](#安裝)
 - [wapform.ini 參數說明](#wapformini-參數說明)
-- [多國語言介面：language.txt](#多國語言介面languagetxt)
 - [執行範例](#執行範例)
 - [圖片上傳使用 WapForm for Web](#圖片上傳使用-wapform-for-web)
 - [用 HTTP 伺服器部署程式（WapForm Runtime）](#用-http-伺服器部署程式wapform-runtime)
@@ -133,19 +132,6 @@ language=tw
 
 > **安全提醒**：正式環境的 `wapform.ini` 含有資料庫密碼，不要放進公開 repo 或共用資料夾。
 > 本 repo 不含 `wapform.ini`，請自行建立。
-
-## 多國語言介面：language.txt
-
-`language.txt` 放在 `wapform.ini` 旁（UTF-8）。每行一筆：英文為鍵，後面接繁體中文與日文翻譯，以逗號分隔：
-
-```
-; English=Traditional Chinese,Japanese
-Item No=料號,品番
-Search=查詢,検索
-```
-
-WML 中的標籤與標題用英文寫；設定 `language=tw` 或 `jp` 時就顯示翻譯，缺少的翻譯會顯示英文。
-在 WapForm Toolkit 的 *Languages › Interface Languages…* 可以設定 `language=` 並編輯 `language.txt`。
 
 ## 執行範例
 

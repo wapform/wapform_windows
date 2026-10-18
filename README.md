@@ -18,7 +18,6 @@ More samples will be added over time; each sample lives in its own folder.
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [wapform.ini](#wapformini)
-- [Interface languages: language.txt](#interface-languages-languagetxt)
 - [Running a sample](#running-a-sample)
 - [Image upload uses WapForm for Web](#image-upload-uses-wapform-for-web)
 - [Deploying programs with an HTTP server (WapForm Runtime)](#deploying-programs-with-an-http-server-wapform-runtime)
@@ -141,21 +140,6 @@ language=en
 
 > **Security.** A real `wapform.ini` holds the database password: keep it out of public
 > repositories and shared folders. This repository does not contain one — create your own.
-
-## Interface languages: language.txt
-
-`language.txt` sits next to `wapform.ini` (UTF-8). One entry per line: the English text is the
-key, followed by the Traditional Chinese and Japanese translations separated by a comma:
-
-```
-; English=Traditional Chinese,Japanese
-Item No=料號,品番
-Search=查詢,検索
-```
-
-Write labels and titles in WML in English; with `language=tw` or `jp` they are shown translated,
-and a missing translation shows the English text. In WapForm Toolkit,
-*Languages › Interface Languages…* sets `language=` and edits `language.txt`.
 
 ## Running a sample
 
