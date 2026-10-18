@@ -18,6 +18,8 @@
 - [wapform.ini 參數說明](#wapformini-參數說明)
 - [多國語言介面：language.txt](#多國語言介面languagetxt)
 - [執行範例](#執行範例)
+- [圖片上傳使用 WapForm for Web](#圖片上傳使用-wapform-for-web)
+- [用 HTTP 伺服器部署程式（WapForm Runtime）](#用-http-伺服器部署程式wapform-runtime)
 - [授權與試用](#授權與試用)
 - [上線前檢查](#上線前檢查)
 
@@ -82,6 +84,8 @@
 | Windows 10／11 | WapForm Toolkit／Runtime |
 | [WapForm Toolkit](https://apps.microsoft.com/detail/9PMRZVM58RM4) 或 [WapForm Runtime](https://apps.microsoft.com/detail/9N1DKMZR2PF4)（Microsoft Store） | 執行範例；Toolkit 也能編輯範例 |
 | MySQL 或 MariaDB（例如 XAMPP） | 範例資料庫 |
+| [WapForm for Web](https://wapform.com/web)（`wapsetup.exe`，內含免費的 WapForm Web Server） | `app002.wml` 的圖片上傳與商品圖片——建議安裝 |
+| 一般 HTTP 伺服器（IIS 靜態站台、nginx、`python -m http.server`…） | 透過網路把程式部署給 WapForm Runtime——選用 |
 
 ## 安裝
 
@@ -148,6 +152,44 @@ WML 中的標籤與標題用英文寫；設定 `language=tw` 或 `jp` 時就顯�
 1. 啟動 WapForm Toolkit 或 Runtime。
 2. 開啟 `sales\wapform.wml`（主選單），以 `admin`／`123`（全部功能）或 `demo`／`123`（只有銷售選單）登入；
    也可以直接開單一畫面，例如 `sales\app002.wml`（商品）或 `sales\app006.wml`（出貨單）。
+
+## 圖片上傳使用 WapForm for Web
+
+商品資料 `app002.wml` 用 `<webcopy protocol="httpupload">` 把商品圖片上傳到 WapForm for Web 範例商店的
+`shop/upload.wml`，並從 `shop/upload/` 讀取顯示：
+
+```
+上傳   http://localhost:8080/shop/upload.wml
+顯示   http://localhost:8080/shop/upload/<檔名>   （預設圖：/shop/300x300.jpg）
+```
+
+所以要使用這個功能，建議下載安裝 **WapForm for Web**（[wapform.com/web](https://wapform.com/web)）：
+它內含免費的 WapForm Web Server（`localhost:8080`）與附 `upload.wml` 的範例商店。使用 IIS 時，請把
+`app002.wml` 裡的網址改成 `http://localhost/shop/…`。範例的其他功能不需要它。
+
+## 用 HTTP 伺服器部署程式（WapForm Runtime）
+
+WapForm Runtime 可以從伺服器執行程式，而不是本機檔案。登入時在 **Server** 欄輸入網址
+（以 `/` 結尾的資料夾網址，例如 `http://192.168.1.10/sales/`），Runtime 就會從那個資料夾下載：
+
+| 檔案 | 用途 |
+|---|---|
+| `wapform.ini` | 資料庫連線與設定 |
+| `wapform.wml`、`app*.wml`… | 程式本身 |
+| `wapform.inf` | 選用：Runtime 本身的自動更新 |
+
+網址會記住，下次登入自動帶出。程式只要在伺服器上更新一次，每台電腦下次開啟時就是新版本。
+
+**請用一般的靜態 HTTP 伺服器——不能用 WapForm for Web。** WapForm for Web 會*執行* `*.wml`，回傳執行後的
+HTML；但 Runtime 需要的是 `.wml` 原始檔。請用任何「原樣回傳檔案」的伺服器提供這個資料夾，例如：
+
+- IIS 站台或虛擬目錄，**不要**設定 `*.wml` → WapServ.dll 的對應，並為 `.wml` 與 `.ini` 加上 MIME 類型
+  （`text/plain`）；
+- nginx 或 Apache；
+- 快速測試：在該資料夾執行 `python -m http.server 8000`（網址 `http://<電腦>:8000/`）。
+
+> **安全提醒**：這種方式下，`wapform.ini`——包括資料庫密碼——會被每一台用戶端下載。只能在可信任的內部網路使用，
+> 資料庫帳號只給程式需要的權限，絕不可讓這個資料夾對外公開。IIS 預設封鎖 `.ini` 正是這個原因，只在這個內部站台開放。
 
 ## 授權與試用
 

@@ -20,6 +20,8 @@ More samples will be added over time; each sample lives in its own folder.
 - [wapform.ini](#wapformini)
 - [Interface languages: language.txt](#interface-languages-languagetxt)
 - [Running a sample](#running-a-sample)
+- [Image upload uses WapForm for Web](#image-upload-uses-wapform-for-web)
+- [Deploying programs with an HTTP server (WapForm Runtime)](#deploying-programs-with-an-http-server-wapform-runtime)
 - [License and trial](#license-and-trial)
 - [Before going live](#before-going-live)
 
@@ -87,6 +89,8 @@ A small sales system on the sample database `sales` (the one in
 | Windows 10 / 11 | WapForm Toolkit / Runtime |
 | [WapForm Toolkit](https://apps.microsoft.com/detail/9PMRZVM58RM4) or [WapForm Runtime](https://apps.microsoft.com/detail/9N1DKMZR2PF4) (Microsoft Store) | Running the samples; Toolkit also for editing them |
 | MySQL or MariaDB (for example XAMPP) | The sample database |
+| [WapForm for Web](https://wapform.com/web) (`wapsetup.exe`, includes the free WapForm Web Server) | Image upload and product pictures in `app002.wml` — recommended |
+| A plain HTTP server (IIS static site, nginx, `python -m http.server` …) | Deploying the programs to WapForm Runtime over the network — optional |
 
 ## Installation
 
@@ -159,6 +163,52 @@ and a missing translation shows the English text. In WapForm Toolkit,
 2. Open `sales\wapform.wml` (the main menu) and sign in with `admin` / `123` (all functions) or
    `demo` / `123` (sales menu only); or open a single screen such as `sales\app002.wml` (products)
    or `sales\app006.wml` (shipment orders).
+
+## Image upload uses WapForm for Web
+
+The product master `app002.wml` uploads product pictures with
+`<webcopy protocol="httpupload">` to the page `shop/upload.wml` of the WapForm for Web sample
+store, and shows them from `shop/upload/`:
+
+```
+upload   http://localhost:8080/shop/upload.wml
+show     http://localhost:8080/shop/upload/<file>   (default picture: /shop/300x300.jpg)
+```
+
+So for this function, download and install **WapForm for Web**
+([wapform.com/web](https://wapform.com/web)): it includes the free WapForm Web Server
+(`localhost:8080`) and the sample store with `upload.wml`. Under IIS change the address to
+`http://localhost/shop/…` in `app002.wml`. Everything else in the sample works without it.
+
+## Deploying programs with an HTTP server (WapForm Runtime)
+
+WapForm Runtime can run the programs from a server instead of local files. At sign-in, enter the
+**Server** address (a folder URL ending with `/`, for example `http://192.168.1.10/sales/`).
+Runtime then downloads from that folder:
+
+| File | Purpose |
+|---|---|
+| `wapform.ini` | Database connection and settings |
+| `wapform.wml`, `app*.wml`, … | The programs |
+| `wapform.inf` | Optional: automatic update of the Runtime itself |
+
+The address is remembered for the next sign-in. Update a program once on the server and every PC
+gets the new version the next time it opens it.
+
+**Use a plain static HTTP server — not WapForm for Web.** WapForm for Web *executes* `*.wml`
+pages and returns the resulting HTML, but Runtime needs the `.wml` source itself. Serve the
+folder with any server that returns files as they are, for example:
+
+- an IIS site or virtual directory **without** the `*.wml` → WapServ.dll mapping, with MIME types
+  added for `.wml` and `.ini` (`text/plain`);
+- nginx or Apache;
+- for a quick test: `python -m http.server 8000` in the folder (address
+  `http://<pc>:8000/`).
+
+> **Security.** In this mode `wapform.ini` — including the database password — is downloaded by
+> every client. Use it only on a trusted internal network, give the database account only the
+> rights the programs need, and never expose this folder to the internet. IIS blocks `.ini` files
+> by default precisely for this reason; allow it only on this internal site.
 
 ## License and trial
 
