@@ -187,6 +187,12 @@ WapForm Toolkit 與 Runtime 第一次使用時開始 30 天全功能試用，之
 - 換掉模擬的 MySQL 帳號與範例登入帳號（`admin`／`123`、`demo`／`123`）。
 - 刪除或修改範例資料。
 
+## 授權
+
+本 repo 的範例檔案以 [MIT 授權](LICENSE) 釋出：可以自由複製、修改並用在你自己的專案，包括商業用途。
+WapForm 產品本身（WapForm Toolkit、WapForm Runtime、WapForm for Web）是商業軟體，另行授權——
+見 [wapform.com/tw/terms](https://wapform.com/tw/terms)。
+
 ---
 
 文件與支援：[wapform.com](https://wapform.com) ·

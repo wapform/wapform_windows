@@ -205,6 +205,13 @@ license key is emailed to you; enter it in the program's License window.
 - Replace the simulated MySQL account and the sample sign-ins (`admin` / `123`, `demo` / `123`).
 - Delete or edit the sample data.
 
+## License
+
+The sample files in this repository are released under the [MIT License](LICENSE): you may copy,
+change and use them in your own projects, including commercial ones. The WapForm products
+themselves (WapForm Toolkit, WapForm Runtime, WapForm for Web) are commercial software, licensed
+separately — see [wapform.com/terms](https://wapform.com/terms).
+
 ---
 
 Documentation and support: [wapform.com](https://wapform.com) ·
